@@ -1,3 +1,1 @@
-This is our Crypto project
-
-Change
+Python implementation of Continued Fraction Factorization
