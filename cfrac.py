@@ -5,33 +5,9 @@ import random
 from xml.sax.handler import feature_validation
 
 
-def issquare(n):
+def is_square(n):
     return isqrt(n) ** 2 == n
 
-
-# def factor(n):
-#     res = defaultdict(lambda: 0)
-#     while True:
-#         p = get_prime_divisor(n)
-
-#         res[p] += 1
-#         if p == n:
-#             return res
-#         n //= p
-    
-# def get_prime_divisor(N):
-#     if N%2==0:
-#             return 2
-#     x = random.randint(1, N-1)
-#     y = x
-#     c = random.randint(1, N-1)
-#     g = 1
-#     while g==1:             
-#             x = ((x*x)%N+c)%N
-#             y = ((y*y)%N+c)%N
-#             y = ((y*y)%N+c)%N
-#             g = gcd(abs(x-y),N)
-#     return g
 
 def factor(n):
     Ans = defaultdict(lambda: 0)
@@ -48,7 +24,7 @@ def factor(n):
     return Ans
 
 
-def issquarefree(n):
+def is_square_free(n):
     for e in factor(n).values():
         if e >= 2:
             return False
@@ -59,7 +35,7 @@ def issquarefree(n):
 def next_multiplier(n, k):
     k += 2
 
-    while (not issquarefree(k) or gcd(k, n) != 1):
+    while (not is_square_free(k) or gcd(k, n) != 1):
         k += 1
 
     return k
@@ -187,7 +163,7 @@ def cffm(n, multiplier=1):
 
         return arr1 + arr2
 
-    if issquare(n):
+    if is_square(n):
         f = cffm(isqrt(n))
         return sorted(f + f)
 
@@ -207,7 +183,7 @@ def cffm(n, multiplier=1):
             factor_base.append(p)
 
     factor_prod = prod(factor_base)
-    factor_index = {}  # Dict{Int64, Int64}()
+    factor_index = {} 
 
     for k in range(1, len(factor_base) + 1):
         factor_index[factor_base[k - 1]] = k - 1
@@ -236,7 +212,7 @@ def cffm(n, multiplier=1):
 
         (f1, f2) = (f2, (r*f2 + f1) % n)
 
-        if issquare(z):
+        if is_square(z):
             g = gcd(f1 - isqrt(z), n)
 
             if g > 1 and g < n:
@@ -257,7 +233,7 @@ def cffm(n, multiplier=1):
     I = gaussian_elimination(A, len(A))
 
     LR = 0
-    # !
+    
     for k in range(len(A) - 1, 0, -1):
         if A[k] != 0:
             LR = k + 1
@@ -313,20 +289,6 @@ def cffm(n, multiplier=1):
     return sorted(final_factors)
 
 
-file = open("./nums.txt").read()
-nums = [int(i) for i in re.findall(r'\b\d+\b', file)]
 
-
-print(cffm(2 ** 128 + 1))
-# print(cffm(2 ** (2 ** 7) + 1))
-
-for i in range(000):
-    p = random.choice(nums)
-    q = random.choice(nums)
-
-    n = p * q
-    res = cffm(n)
-    if p in res:
-        pass
-    else:
-        print("Ебаный рот блять")
+if(__name__ == '__main__'):
+    print(cffm(2 ** 64 + 1))
